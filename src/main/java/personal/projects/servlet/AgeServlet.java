@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 
 @WebServlet(urlPatterns = {"/ageCalculator"})
@@ -24,13 +26,14 @@ public class AgeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        PrintWriter out = resp.getWriter();
         String birthDate = req.getParameter("birthDate");
         int result = ageCalculator.getAgeInDays(birthDate);
         CalculationResponse calculationResponse = new CalculationResponse(result);
         resp.setContentType("application/json");
         Gson gson = new Gson();
-        resp.getWriter().write(gson.toJson(calculationResponse));
+                resp.getWriter().write(gson.toJson(calculationResponse.getResult()));
+//        out.println("Your age in days is: " + calculationResponse.getResult());
 
 
     }
